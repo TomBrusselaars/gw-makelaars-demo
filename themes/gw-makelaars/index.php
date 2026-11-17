@@ -21,7 +21,7 @@ get_header( 'home' );
 						</article>
 					<?php endwhile; ?>
 				<?php elseif ( have_posts() ) : ?>
-					<h1 class="heading-style-h2">Nieuws</h1>
+					<h1 class="heading-style-h2"><?php echo esc_html( gw_t( 'Nieuws' ) ); ?></h1>
 					<div class="kaarten_grid" style="--kolommen:2">
 						<?php while ( have_posts() ) : the_post(); ?>
 							<a class="kaart" href="<?php the_permalink(); ?>"<?php echo gw_reveal(); // phpcs:ignore WordPress.Security.EscapeOutput ?>>
@@ -33,13 +33,13 @@ get_header( 'home' );
 					</div>
 				<?php elseif ( is_home() ) : ?>
 					<div class="tekst-beeld_text">
-						<h1 class="heading-style-h2">Nieuws</h1>
-						<p class="text-size-medium">Er zijn nog geen nieuwsberichten.</p>
+						<h1 class="heading-style-h2"><?php echo esc_html( gw_t( 'Nieuws' ) ); ?></h1>
+						<p class="text-size-medium"><?php echo esc_html( gw_t( 'Er zijn nog geen nieuwsberichten.' ) ); ?></p>
 					</div>
 				<?php else : ?>
 					<div class="tekst-beeld_text">
-						<h1 class="heading-style-h2">Niet gevonden</h1>
-						<?php gw_knop( 'Terug naar de homepage', home_url( '/' ) ); ?>
+						<h1 class="heading-style-h2"><?php echo esc_html( gw_t( 'Niet gevonden' ) ); ?></h1>
+						<?php gw_knop( gw_t( 'Terug naar de homepage' ), home_url( '/' ) ); ?>
 					</div>
 				<?php endif; ?>
 			</div>

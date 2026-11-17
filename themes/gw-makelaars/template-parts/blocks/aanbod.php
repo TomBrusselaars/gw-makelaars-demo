@@ -6,7 +6,7 @@ $actief  = function_exists( 'yc_rw_query' );
 $filters = $actief ? yc_rw_filters() : array( 'aanbod' => '' );
 $query   = $actief ? yc_rw_query() : null; // alles; het filter verbergt kaarten
 $archief = $actief ? get_post_type_archive_link( YC_RW_CPT ) : '#';
-$tabs    = array( '' => 'Alles', 'koop' => 'Koop', 'huur' => 'Huur' );
+$tabs    = array( '' => gw_t( 'Alles' ), 'koop' => gw_t( 'Koop' ), 'huur' => gw_t( 'Huur' ) );
 $totaal  = 0;
 ?>
 <section class="section_home-aanbod background-color-sand"<?php echo gw_anker( $a ); // phpcs:ignore WordPress.Security.EscapeOutput ?>>
@@ -44,7 +44,7 @@ $totaal  = 0;
 					<a class="button" href="<?php echo esc_url( $archief ); ?>" data-aanbod-knop><?php echo esc_html( $a['knop_label'] ); ?> (<span data-aanbod-aantal><?php echo (int) $totaal; ?></span>)</a>
 				</div>
 			<?php else : ?>
-				<p class="text-size-medium">Er is op dit moment geen aanbod dat hieraan voldoet.</p>
+				<p class="text-size-medium"><?php echo esc_html( gw_t( 'Er is op dit moment geen aanbod dat hieraan voldoet.' ) ); ?></p>
 			<?php endif; ?>
 		</div>
 	</div>

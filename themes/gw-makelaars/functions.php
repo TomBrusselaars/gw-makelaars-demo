@@ -12,6 +12,8 @@ require_once get_template_directory() . '/inc/blocks.php';
 require_once get_template_directory() . '/inc/patronen.php';
 require_once get_template_directory() . '/inc/formulier.php';
 require_once get_template_directory() . '/inc/stijlgids.php';
+require_once get_template_directory() . '/inc/talen.php';
+require_once get_template_directory() . '/inc/talen-en.php';
 
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'title-tag' );

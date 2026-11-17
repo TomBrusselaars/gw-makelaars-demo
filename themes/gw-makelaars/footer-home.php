@@ -7,12 +7,12 @@
 defined( 'ABSPATH' ) || exit;
 $archief = function_exists( 'yc_rw_query' ) ? get_post_type_archive_link( YC_RW_CPT ) : home_url( '/#aanbod' );
 $menu    = gw_menu_items( 'footermenu', array(
-	array( 'Home', home_url( '/' ), '' ),
-	array( 'Over ons', home_url( '/#over-ons' ), '' ),
-	array( 'Aanbod', $archief, '' ),
-	array( 'Diensten', home_url( '/#diensten' ), '' ),
-	array( 'Nieuws', home_url( '/#nieuws' ), '' ),
-	array( 'Contact', home_url( '/#contact' ), '' ),
+	array( gw_t( 'Home' ), home_url( '/' ), '' ),
+	array( gw_t( 'Over ons' ), home_url( '/#over-ons' ), '' ),
+	array( gw_t( 'Aanbod' ), $archief, '' ),
+	array( gw_t( 'Diensten' ), home_url( '/#diensten' ), '' ),
+	array( gw_t( 'Nieuws' ), home_url( '/#nieuws' ), '' ),
+	array( gw_t( 'Contact' ), home_url( '/#contact' ), '' ),
 ) );
 $social = array();
 foreach ( array( 'facebook' => 'Facebook', 'linkedin' => 'LinkedIn', 'funda' => 'Funda Business' ) as $sleutel => $label ) {
@@ -29,7 +29,7 @@ foreach ( array( 'facebook' => 'Facebook', 'linkedin' => 'LinkedIn', 'funda' => 
 				<div class="footer_columns">
 					<div class="footer_column">
 						<div class="footer_block">
-							<div class="footer_heading">Algemeen contact</div>
+							<div class="footer_heading"><?php echo esc_html( gw_t( 'Algemeen contact' ) ); ?></div>
 							<?php gw_contactlijst( true ); ?>
 						</div>
 						<?php if ( $social ) : ?>
@@ -45,7 +45,7 @@ foreach ( array( 'facebook' => 'Facebook', 'linkedin' => 'LinkedIn', 'funda' => 
 					</div>
 					<div class="footer_column">
 						<div class="footer_block">
-							<div class="footer_heading">Kom langs</div>
+							<div class="footer_heading"><?php echo esc_html( gw_t( 'Kom langs' ) ); ?></div>
 							<div class="contact-list"><?php gw_adresregel(); ?></div>
 						</div>
 					</div>
@@ -60,7 +60,7 @@ foreach ( array( 'facebook' => 'Facebook', 'linkedin' => 'LinkedIn', 'funda' => 
 				<span>© <?php echo esc_html( gmdate( 'Y' ) . ' ' . get_bloginfo( 'name' ) ); ?></span>
 				<span class="footer_bottom-links">
 					<?php foreach ( array( 'voorwaarden' => 'Algemene voorwaarden', 'cookies' => 'Cookies' ) as $sleutel => $label ) : $u = (string) get_theme_mod( 'gw_link_' . $sleutel ); ?>
-						<?php if ( $u ) : ?><a href="<?php echo esc_url( $u ); ?>"><?php echo esc_html( $label ); ?></a><?php endif; ?>
+						<?php if ( $u ) : ?><a href="<?php echo esc_url( $u ); ?>"><?php echo esc_html( gw_t( $label ) ); ?></a><?php endif; ?>
 					<?php endforeach; ?>
 				</span>
 			</div>

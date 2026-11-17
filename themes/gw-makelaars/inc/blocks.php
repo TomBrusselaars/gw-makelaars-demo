@@ -159,6 +159,24 @@ add_action( 'init', function () {
 	}
 }, 25 );
 
+/** Eenmalig: een pagina "Diensten" met de volledige lijst (doel van de knop "Bekijk alle diensten"). */
+add_action( 'init', function () {
+	if ( get_option( 'gw_diensten_pagina_geseed' ) ) {
+		return;
+	}
+	update_option( 'gw_diensten_pagina_geseed', 1 );
+	if ( get_page_by_path( 'diensten' ) ) {
+		return;
+	}
+	wp_insert_post( array(
+		'post_type'    => 'page',
+		'post_status'  => 'publish',
+		'post_title'   => 'Diensten',
+		'post_name'    => 'diensten',
+		'post_content' => '<!-- wp:gw/diensten {"knop_label":""} /-->',
+	) );
+}, 26 );
+
 /** Pagina's met blokken: geen automatische <p>/<br> eromheen. */
 function gw_blokken_tonen() {
 	if ( has_blocks() ) {

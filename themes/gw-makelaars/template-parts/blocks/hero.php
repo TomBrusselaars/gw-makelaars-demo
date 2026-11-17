@@ -24,7 +24,7 @@ $c = gw_contact();
 		<a class="home-hero_contact" href="#contact"<?php echo gw_reveal( 6 ); // phpcs:ignore WordPress.Security.EscapeOutput ?>>
 			<?php echo gw_img( $c['foto'], 'stan.webp', 'home-hero_contact-photo', array( 'maat' => 'thumbnail', 'laden' => 'eager' ) ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 			<span class="home-hero_contact-text">
-				<span class="heading-style-h6">Contact <?php echo esc_html( $c['voornaam'] ); ?></span>
+				<span class="heading-style-h6"><?php echo esc_html( gw_t( 'Contact' ) . ' ' . $c['voornaam'] ); ?></span>
 				<span class="text-size-medium"><?php echo esc_html( $c['rol'] ); ?></span>
 			</span>
 		</a>

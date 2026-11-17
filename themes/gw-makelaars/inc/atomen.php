@@ -12,7 +12,45 @@ defined( 'ABSPATH' ) || exit;
 
 /** URL van een bestand uit assets/home/ (werkt ook vanuit een child-thema). */
 function gw_asset_url( $bestand ) {
-	return get_theme_file_uri( 'assets/home/' . ltrim( $bestand, '/' ) );
+	$bestand = ltrim( $bestand, '/' );
+	// SVG's in beeld-tags kunnen geen CSS-variabelen lezen. Zijn de merkkleuren in de
+	// Stijlgids aangepast, dan krijgt het icoon die kleuren mee (via /?gw_svg=naam).
+	if ( '.svg' === substr( $bestand, -4 ) ) {
+		$svg = gw_svg_gekleurd( $bestand );
+		if ( '' !== $svg ) {
+			return add_query_arg( array( 'gw_svg' => $bestand, 'v' => substr( md5( $svg ), 0, 8 ) ), home_url( '/' ) );
+		}
+	}
+	return get_theme_file_uri( 'assets/home/' . $bestand );
+}
+
+/**
+ * Inhoud van een SVG uit assets/home/ met de ingestelde merkkleuren (olijf, zand, accent),
+ * of '' als er niets is aangepast en het bestand dus ongewijzigd gebruikt kan worden.
+ */
+function gw_svg_gekleurd( $bestand ) {
+	static $cache = array();
+	if ( isset( $cache[ $bestand ] ) ) {
+		return $cache[ $bestand ];
+	}
+	$cache[ $bestand ] = '';
+	$opt = defined( 'GW_TOKENS_OPTIE' ) ? get_option( GW_TOKENS_OPTIE, array() ) : array();
+	$pad = get_theme_file_path( 'assets/home/' . $bestand );
+	if ( ! is_array( $opt ) || ! $opt || ! is_readable( $pad ) ) {
+		return '';
+	}
+	$oud = (string) file_get_contents( $pad );
+	$svg = $oud;
+	foreach ( array( '#6E5A0E' => 'olive', '#E5E1D2' => 'sand', '#80DBE9' => 'accent', '#1A1916' => 'menu-close-color', '#3A3C2A' => 'menu-panel-line' ) as $hex => $token ) {
+		$nieuw = isset( $opt[ $token ] ) ? sanitize_hex_color( $opt[ $token ] ) : '';
+		if ( $nieuw ) {
+			$svg = str_ireplace( $hex, $nieuw, $svg );
+		}
+	}
+	if ( $svg !== $oud ) {
+		$cache[ $bestand ] = $svg;
+	}
+	return $cache[ $bestand ];
 }
 
 /** Attributen voor binnenkomst-animatie: data-reveal, optioneel "door", optioneel vertraging. */
@@ -159,6 +197,9 @@ function gw_sectiekop( $tag, $kop, array $o = array() ) {
  */
 function gw_contactpersoon_post() {
 	$id = absint( get_theme_mod( 'gw_contactpersoon' ) );
+	if ( $id && function_exists( 'pll_get_post' ) && pll_get_post( $id ) ) {
+		$id = (int) pll_get_post( $id ); // vertaalde versie van het teamlid in de huidige taal
+	}
 	$p  = $id ? get_post( $id ) : null;
 	return $p && 'gw_team' === $p->post_type && 'publish' === $p->post_status ? $p : null;
 }
@@ -288,7 +329,7 @@ function gw_taalkeuze( $donker = false ) {
 	}
 	$klasse = 'nav_lang' . ( $donker ? ' is-dark' : '' );
 	$pijl   = '<img src="' . esc_url( gw_asset_url( 'chevron.svg' ) ) . '" width="18" height="10" alt="">';
-	$talen  = function_exists( 'pll_the_languages' ) ? pll_the_languages( array( 'raw' => 1 ) ) : array();
+	$talen  = function_exists( 'pll_the_languages' ) ? pll_the_languages( array( 'raw' => 1, 'hide_if_empty' => 0, 'hide_if_no_translation' => 0 ) ) : array();
 	if ( ! is_array( $talen ) || count( $talen ) < 2 ) {
 		printf( '<span class="%s">%s %s</span>', esc_attr( $klasse ), esc_html( strtoupper( substr( get_locale(), 0, 2 ) ) ), $pijl ); // phpcs:ignore WordPress.Security.EscapeOutput
 		return;
@@ -305,3 +346,26 @@ function gw_taalkeuze( $donker = false ) {
 	}
 	echo '</ul></div>';
 }
+
+/** Levert een SVG uit assets/home/ met de ingestelde merkkleuren: /?gw_svg=arrow.svg. Alleen bestaande bestanden in die map. */
+add_action( 'template_redirect', function () {
+	if ( ! isset( $_GET['gw_svg'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		return;
+	}
+	$naam = sanitize_file_name( wp_unslash( $_GET['gw_svg'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+	$pad  = get_theme_file_path( 'assets/home/' . $naam );
+	if ( '.svg' !== substr( $naam, -4 ) || ! is_readable( $pad ) ) {
+		status_header( 404 );
+		exit;
+	}
+	$svg = gw_svg_gekleurd( $naam );
+	if ( '' === $svg ) {
+		$svg = (string) file_get_contents( $pad );
+	}
+	nocache_headers();
+	header( 'Content-Type: image/svg+xml; charset=utf-8' );
+	header( 'Cache-Control: public, max-age=3600' );
+	header( 'X-Content-Type-Options: nosniff' );
+	echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput
+	exit;
+}, 0 );

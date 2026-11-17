@@ -94,6 +94,8 @@ function gw_componenten() {
 			'velden' => array(
 				'tag' => $tekst( 'Label boven de kop', 'Diensten' ),
 				'kop' => $tekst( 'Kop', 'Aan welke kant van de deur sta je?' ),
+				'knop_label' => $tekst( 'Tekstlink onder de lijst — tekst (leeg = geen link)', 'Bekijk alle diensten' ),
+				'knop_url'   => $url( 'Tekstlink onder de lijst — link (leeg = pagina Diensten)', '' ),
 			),
 		),
 		'nieuws'      => array(

@@ -48,6 +48,8 @@ function gw_token_schema() {
 	$t['button-bg']       = array( 'Knop: achtergrond', 'color', 'Componenten' );
 	$t['button-color']    = array( 'Knop: tekstkleur', 'color', 'Componenten' );
 	$t['button-hover-bg'] = array( 'Knop: achtergrond bij hover', 'color', 'Componenten' );
+	$t['menu-close-color'] = array( 'Menu: kleur sluitkruisje', 'color', 'Componenten' );
+	$t['menu-panel-line']  = array( 'Menu: kleur randje paneel', 'color', 'Componenten' );
 	$t['button-height']   = array( 'Knop: hoogte', 'length', 'Componenten' );
 	$t['button-padding-x'] = array( 'Knop: ruimte links/rechts', 'length', 'Componenten' );
 	$t['button-radius']   = array( 'Knop: afronding', 'length', 'Componenten' );
@@ -135,7 +137,13 @@ function gw_tokens_css() {
 			$regels .= '--' . $k . ':' . $v . ';';
 		}
 	}
-	return $regels ? ':root{' . $regels . '}' : '';
+	// Achtergrond-SVG's in de CSS (url()) kunnen geen variabelen lezen: zet ze met de nieuwe kleuren.
+	if ( function_exists( 'gw_svg_gekleurd' ) && ( $svg = gw_svg_gekleurd( 'footer-shape-h.svg' ) ) ) {
+		$regels_na = '.footer_card{background-image:url("data:image/svg+xml;base64,' . base64_encode( $svg ) . '")}'; // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions
+	} else {
+		$regels_na = '';
+	}
+	return $regels ? ':root{' . $regels . '}' . $regels_na : $regels_na;
 }
 
 add_action( 'wp_enqueue_scripts', function () {

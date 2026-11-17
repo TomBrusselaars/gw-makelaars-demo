@@ -150,12 +150,58 @@
     });
   }
 
-  // ---- Nieuws: start bij de tweede kaart (zoals in het ontwerp) en sleepbaar met de muis ----
+  // ---- Nieuws: oneindig doorlopende slider, sleepbaar met de muis ----
   var track = document.querySelector('[data-nieuws]');
   if (track) {
-    var tweede = track.children[1];
-    if (tweede && track.hasAttribute('data-start')) track.scrollLeft = tweede.offsetLeft - track.children[0].offsetLeft;
-    var sleept = false, bewoog = false, startX = 0, startScroll = 0;
+    var origineel = Array.prototype.slice.call(track.children);
+    var sleept = false, bewoog = false, startX = 0, startScroll = 0, set = 0, loopt = false;
+
+    // Past alles in beeld, dan is er niets te slepen en loopt er niets door.
+    var pasAan = function () {
+      var kan = loopt ? true : track.scrollWidth > track.clientWidth + 1;
+      track.classList.toggle('is-vast', !kan);
+      if (kan) track.setAttribute('data-cursor', 'drag'); else track.removeAttribute('data-cursor');
+    };
+
+    // Drie reeksen kaarten (kopie, origineel, kopie): bij de rand springen we onzichtbaar een reeks terug.
+    var maakLoop = function () {
+      if (loopt || origineel.length < 2 || track.scrollWidth <= track.clientWidth + 1) return;
+      var kopie = function () {
+        return origineel.map(function (k) {
+          var c = k.cloneNode(true);
+          c.setAttribute('aria-hidden', 'true'); c.setAttribute('tabindex', '-1');
+          c.removeAttribute('data-reveal'); c.removeAttribute('style');
+          return c;
+        });
+      };
+      var voor = kopie(), na = kopie();
+      voor.forEach(function (c) { track.insertBefore(c, track.firstChild); });
+      na.forEach(function (c) { track.appendChild(c); });
+      loopt = true;
+      meet();
+      track.style.scrollSnapType = 'none';
+      track.scrollLeft = set;
+      requestAnimationFrame(function () { track.style.scrollSnapType = ''; });
+    };
+    var meet = function () {
+      set = origineel[0].offsetLeft - track.children[0].offsetLeft;
+    };
+    var spring = function (delta) {
+      track.style.scrollSnapType = 'none';
+      track.scrollLeft += delta;
+      startScroll += delta;
+      requestAnimationFrame(function () { track.style.scrollSnapType = ''; });
+    };
+    track.addEventListener('scroll', function () {
+      if (!loopt || !set) return;
+      if (track.scrollLeft < set * 0.5) spring(set);
+      else if (track.scrollLeft > set * 1.5) spring(-set);
+    }, { passive: true });
+
+    maakLoop();
+    pasAan();
+    window.addEventListener('resize', function () { if (loopt) meet(); pasAan(); });
+
     track.addEventListener('pointerdown', function (e) {
       if (e.pointerType !== 'mouse') return;
       sleept = true; bewoog = false; startX = e.clientX; startScroll = track.scrollLeft;

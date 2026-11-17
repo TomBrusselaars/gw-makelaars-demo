@@ -16,7 +16,7 @@
   --sand: #e5e1d2;
   --accent: #80dbe9;
   --white: #fff;
-  --line: rgba(110, 90, 14, .3);
+  --line: color-mix(in srgb, var(--olive) 30%, transparent);
   /* ITC Charter en Proxima Nova zijn licentiefonts: ze laden alleen als ze op
      het apparaat staan. Voor livegang: webfont-licentie + @font-face toevoegen. */
   --font-serif: "Charter", "ITC Charter", "Bitstream Charter", Georgia, serif;
@@ -67,6 +67,8 @@
   --button-radius: 6px;
   --button-chamfer: 1.875rem;   /* afgeschuinde hoek rechtsboven; 0 = rechte hoek */
   --button-weight: 500;
+  --menu-close-color: #1a1916;               /* sluitkruisje in het menu */
+  --menu-panel-line: #3a3c2a;                /* randje van het menupaneel */
   --card-panel-bg: var(--white);
   --card-overlay: rgba(0, 0, 0, .2);
   --section-space: var(--space-5xl); /* verticale ruimte van een sectie */
@@ -137,6 +139,7 @@ body.is-home-design { margin: 0; background: var(--olive); color: var(--olive); 
 
 /* knop: één element, vorm en kleur uit de tokens */
 .is-home-design .button { display: inline-flex; align-items: center; height: var(--button-height); padding: 0 var(--button-padding-x); font-weight: var(--button-weight); font-size: var(--text-m); color: var(--button-color) !important; white-space: nowrap; background: var(--button-bg); border-radius: var(--button-radius); clip-path: polygon(0 0, calc(100% - var(--button-chamfer)) 0, 100% var(--button-chamfer), 100% 100%, 0 100%); transition: transform var(--motion-fast) var(--ease-out), background-color var(--motion-fast); }
+.home-diensten_actie { margin-top: var(--space-2xl); }
 .button:hover { transform: translateY(calc(-1 * var(--hover-lift))); background: var(--button-hover-bg); }
 .button:active { transform: translateY(0) scale(.98); }
 .button-group { display: flex; align-items: center; gap: var(--space-l); flex-wrap: wrap; }
@@ -227,11 +230,12 @@ html.is-menu-open { overflow: hidden; }
 .section_home-hero { isolation: isolate; }
 .home-hero_visual { position: relative; z-index: 0; margin-left: 3.03rem; aspect-ratio: 1391.5 / 851.5; }
 .home-hero_shape { position: absolute; inset: 0; overflow: hidden; border-radius: var(--radius-s); --tx: var(--hero-top-x); --lh: var(--hero-left-h); --rh: var(--hero-right-h); --bx: var(--hero-bottom-x); clip-path: polygon(var(--tx) 0, 100% 0, 100% var(--rh), var(--bx) 100%, 0 100%, 0 calc(100% - var(--lh))); }
-/* Hero vult het scherm (desktop): de foto behoudt de verhouding van het ontwerp en staat rechts uitgelijnd,
-   zodat de schuine vorm nergens vervormt. */
+/* Hero vult het scherm (desktop): de foto is een achtergrond over de volle breedte en hoogte van de hero.
+   De schuine vorm (tokens) schaalt in procenten mee met het scherm. */
 @media (min-width: 1200px) {
-  .section_home-hero { display: flex; flex-direction: column; justify-content: flex-end; min-height: calc(100vh - var(--wp-admin--admin-bar--height, 0px)); min-height: calc(100svh - var(--wp-admin--admin-bar--height, 0px)); }
-  .home-hero_visual { width: min(calc(100% - 3.03rem), calc((100vh - var(--wp-admin--admin-bar--height, 0px) - var(--space-5xl)) * 1.634)); width: min(calc(100% - 3.03rem), calc((100svh - var(--wp-admin--admin-bar--height, 0px) - var(--space-5xl)) * 1.634)); margin-left: auto; }
+  .section_home-hero { min-height: max(38rem, calc(100vh - var(--wp-admin--admin-bar--height, 0px))); min-height: max(38rem, calc(100svh - var(--wp-admin--admin-bar--height, 0px))); padding-bottom: 0; }
+  .home-hero_visual { position: absolute; inset: 0; width: auto; margin: 0; aspect-ratio: auto; }
+  .home-hero_contact { bottom: var(--space-xl); }
 }
 .home-hero_image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .section_home-hero > .padding-global { position: absolute; inset: 11rem 0 auto; }
@@ -322,7 +326,8 @@ html.is-menu-open { overflow: hidden; }
 /* ---------- Nieuws ---------- */
 .section_home-nieuws { padding-top: 5.5625rem; border-radius: var(--radius-l) var(--radius-l) 0 0; background: var(--sand); }
 .home-nieuws_header { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-l); margin-bottom: var(--space-3xl); }
-.home-nieuws_track { display: flex; gap: 2.47rem; overflow-x: auto; scrollbar-width: none; cursor: grab; padding-inline: max(var(--space-5xl), calc((100vw - 78rem) / 2)); scroll-padding-inline: max(var(--space-5xl), calc((100vw - 78rem) / 2)); scroll-snap-type: x proximity; }
+.home-nieuws_track { display: flex; gap: 2.47rem; overflow-x: auto; scrollbar-width: none; cursor: grab; padding-inline: max(var(--space-5xl), calc((100vw - 78rem) / 2)); scroll-padding-inline: max(var(--space-5xl), calc((100vw - 78rem) / 2)); scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+.home-nieuws_track.is-vast { cursor: auto; }
 .home-nieuws_track::-webkit-scrollbar { display: none; }
 .home-nieuws_track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
 .nieuws-card { position: relative; flex: none; width: 24.875rem; height: 29.8125rem; scroll-snap-align: start; user-select: none; -webkit-user-drag: none; }

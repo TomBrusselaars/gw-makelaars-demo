@@ -47,6 +47,19 @@ foreach ( gw_collectie( 'gw_dienst' ) as $p ) {
 					</div>
 				</div>
 				<?php endif; ?>
+				<?php
+				$knop_url = ! empty( $a['knop_url'] ) ? $a['knop_url'] : '';
+				if ( ! $knop_url ) {
+					$dp = get_page_by_path( 'diensten' );
+					if ( $dp && function_exists( 'pll_get_post' ) && pll_get_post( $dp->ID ) ) {
+						$dp = get_post( pll_get_post( $dp->ID ) );
+					}
+					$knop_url = $dp ? get_permalink( $dp ) : '#diensten';
+				}
+				if ( ! empty( $a['knop_label'] ) ) :
+					?>
+					<div class="button-group is-center home-diensten_actie"<?php echo gw_reveal(); // phpcs:ignore WordPress.Security.EscapeOutput ?>><?php gw_tekstlink( $a['knop_label'], $knop_url ); ?></div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

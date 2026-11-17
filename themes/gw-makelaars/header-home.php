@@ -8,10 +8,10 @@
 defined( 'ABSPATH' ) || exit;
 $archief = function_exists( 'yc_rw_query' ) ? get_post_type_archive_link( YC_RW_CPT ) : home_url( '/#aanbod' );
 $menu    = gw_menu_items( 'hoofdmenu', array(
-	array( 'Home', home_url( '/' ), 'Terug naar het begin' ),
-	array( 'Over ons', home_url( '/#over-ons' ), 'Team, werkwijze en regio' ),
-	array( 'Aanbod', $archief, 'Wat er nu beschikbaar is' ),
-	array( 'Diensten', home_url( '/#diensten' ), 'Aanhuur, verhuur en advies' ),
+	array( gw_t( 'Home' ), home_url( '/' ), gw_t( 'Terug naar het begin' ) ),
+	array( gw_t( 'Over ons' ), home_url( '/#over-ons' ), gw_t( 'Team, werkwijze en regio' ) ),
+	array( gw_t( 'Aanbod' ), $archief, gw_t( 'Wat er nu beschikbaar is' ) ),
+	array( gw_t( 'Diensten' ), home_url( '/#diensten' ), gw_t( 'Aanhuur, verhuur en advies' ) ),
 ) );
 $c = gw_contact();
 ?>
@@ -24,13 +24,13 @@ $c = gw_contact();
 </head>
 <body <?php body_class( 'is-home-design' ); ?>>
 <?php wp_body_open(); ?>
-<a class="skip-link" href="#main">Naar de inhoud</a>
+<a class="skip-link" href="#main"><?php echo esc_html( gw_t( 'Naar de inhoud' ) ); ?></a>
 <div class="page-wrapper">
 	<header class="nav_component">
 		<a class="nav_logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"><img src="<?php echo esc_url( gw_asset_url( 'logo-header.svg' ) ); ?>" width="105" height="48" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"></a>
 		<div class="nav_right">
 			<?php gw_taalkeuze(); ?>
-			<button class="nav_menu-button" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu openen">
+			<button class="nav_menu-button" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="<?php echo esc_attr( gw_t( 'Menu openen' ) ); ?>">
 				<img class="nav_menu-shape" src="<?php echo esc_url( gw_asset_url( 'menu-shape.svg' ) ); ?>" width="85" height="58.5" alt="">
 				<img class="nav_menu-lines" src="<?php echo esc_url( gw_asset_url( 'menu-lines.svg' ) ); ?>" width="30" height="15" alt="">
 			</button>
@@ -42,7 +42,7 @@ $c = gw_contact();
 		<img class="nav_menu-panel" src="<?php echo esc_url( gw_asset_url( 'menu-panel.svg' ) ); ?>" alt="">
 		<div class="nav_menu-top">
 			<?php gw_taalkeuze( true ); ?>
-			<button class="nav_menu-close" type="button" aria-label="Menu sluiten" data-menu-sluit><img src="<?php echo esc_url( gw_asset_url( 'menu-close.svg' ) ); ?>" width="23" height="23" alt=""></button>
+			<button class="nav_menu-close" type="button" aria-label="<?php echo esc_attr( gw_t( 'Menu sluiten' ) ); ?>" data-menu-sluit><img src="<?php echo esc_url( gw_asset_url( 'menu-close.svg' ) ); ?>" width="23" height="23" alt=""></button>
 		</div>
 		<nav class="nav_menu-links" aria-label="Hoofdmenu">
 			<?php foreach ( $menu as $i => $m ) : ?>
@@ -56,11 +56,11 @@ $c = gw_contact();
 		</nav>
 		<div class="nav_menu-contact">
 			<div class="footer_block">
-				<div class="footer_heading">Kom langs</div>
+				<div class="footer_heading"><?php echo esc_html( gw_t( 'Kom langs' ) ); ?></div>
 				<?php gw_adresregel(); ?>
 			</div>
 			<div class="footer_block">
-				<div class="footer_heading">Direct contact</div>
+				<div class="footer_heading"><?php echo esc_html( gw_t( 'Direct contact' ) ); ?></div>
 				<?php gw_contactlijst( true ); ?>
 			</div>
 		</div>

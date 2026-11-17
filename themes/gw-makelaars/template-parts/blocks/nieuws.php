@@ -16,9 +16,7 @@ foreach ( $berichten as $b ) {
 	);
 }
 $alle_url = $a['link_url'] ?: ( get_option( 'page_for_posts' ) ? get_permalink( (int) get_option( 'page_for_posts' ) ) : '#nieuws' );
-// vijf kaarten zoals in het ontwerp: de laatste schuift links buiten beeld
-$start  = count( $kaarten ) >= 4;
-$weer   = $start ? array_merge( array( end( $kaarten ) ), $kaarten ) : $kaarten;
+$weer = $kaarten;
 ?>
 <section class="section_home-nieuws"<?php echo gw_anker( $a ); // phpcs:ignore WordPress.Security.EscapeOutput ?>>
 	<div class="padding-global">
@@ -30,7 +28,7 @@ $weer   = $start ? array_merge( array( end( $kaarten ) ), $kaarten ) : $kaarten;
 		</div>
 	</div>
 	<?php if ( ! $kaarten ) : ?><div class="padding-global"><div class="container-large"><?php gw_leeg_melding( 'nieuwsberichten', 'Nieuws' ); ?></div></div><?php else : ?>
-	<div class="home-nieuws_track" data-nieuws data-cursor="drag"<?php echo $start ? ' data-start="1"' : ''; ?>>
+	<div class="home-nieuws_track" data-nieuws data-cursor="drag">
 		<?php foreach ( $weer as $i => $k ) : ?>
 			<a class="nieuws-card" href="<?php echo esc_url( $k['url'] ); ?>"<?php echo gw_reveal( $i ); // phpcs:ignore WordPress.Security.EscapeOutput ?>>
 				<span class="nieuws-card_visual"><?php echo $k['foto']; // phpcs:ignore WordPress.Security.EscapeOutput -- get_the_post_thumbnail / eigen escaping ?></span>
@@ -38,7 +36,7 @@ $weer   = $start ? array_merge( array( end( $kaarten ) ), $kaarten ) : $kaarten;
 					<span class="nieuws-card_meta"><span><?php echo esc_html( $k['cat'] ); ?></span><img src="<?php echo esc_url( gw_asset_url( 'bullet-small.svg' ) ); ?>" width="7.5" height="6" alt=""><span><?php echo esc_html( $k['datum'] ); ?></span></span>
 					<span class="nieuws-card_title"><?php echo esc_html( $k['titel'] ); ?></span>
 					<span class="nieuws-card_text"><?php echo esc_html( $k['tekst'] ); ?></span>
-					<span class="nieuws-card_footer text-link"><?php gw_tekstlink_inhoud( 'Lees meer' ); ?></span>
+					<span class="nieuws-card_footer text-link"><?php gw_tekstlink_inhoud( gw_t( 'Lees meer' ) ); ?></span>
 				</span>
 			</a>
 		<?php endforeach; ?>
