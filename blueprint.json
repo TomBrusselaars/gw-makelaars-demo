@@ -27,7 +27,7 @@
       "step": "installPlugin",
       "pluginData": {
         "resource": "git:directory",
-        "url": "https://github.com/USER/REPO",
+        "url": "https://github.com/TomBrusselaars/gw-makelaars-demo",
         "ref": "main",
         "path": "plugins/yc-realworks"
       },
@@ -39,7 +39,7 @@
       "step": "installTheme",
       "themeData": {
         "resource": "git:directory",
-        "url": "https://github.com/USER/REPO",
+        "url": "https://github.com/TomBrusselaars/gw-makelaars-demo",
         "ref": "main",
         "path": "themes/gw-makelaars"
       },
