@@ -2,7 +2,10 @@
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
   "landingPage": "/",
   "login": true,
-  "preferredVersions": { "php": "8.3", "wp": "latest" },
+  "preferredVersions": {
+    "php": "8.3",
+    "wp": "latest"
+  },
   "siteOptions": {
     "blogname": "GW makelaars",
     "blogdescription": "Bedrijfsmakelaars in de regio Rotterdam",
@@ -10,7 +13,29 @@
     "timezone_string": "Europe/Amsterdam"
   },
   "steps": [
-    { "step": "mkdir", "path": "/wordpress/wp-content/themes/gw-makelaars" },
-    { "step": "writeFile", "path": "/wordpress/wp-content/themes/.keep", "data": "" }
+    {
+      "step": "installPlugin",
+      "pluginData": {
+        "resource": "git:directory",
+        "url": "https://github.com/USER/REPO",
+        "ref": "main",
+        "path": "plugins/yc-realworks"
+      },
+      "options": {
+        "activate": true
+      }
+    },
+    {
+      "step": "installTheme",
+      "themeData": {
+        "resource": "git:directory",
+        "url": "https://github.com/USER/REPO",
+        "ref": "main",
+        "path": "themes/gw-makelaars"
+      },
+      "options": {
+        "activate": true
+      }
+    }
   ]
 }
