@@ -1,0 +1,5 @@
+.gw-veldkop { margin: 1.25rem 0 .25rem; padding: 0; font-size: 14px; }
+.gw-rijen-lijst { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.gw-rij { display: flex; gap: 6px; align-items: center; }
+.gw-rij input { flex: 1; }
+.gw-rij .button { min-width: 32px; padding: 0 6px; }

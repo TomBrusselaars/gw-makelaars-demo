@@ -1,0 +1,12 @@
+/*
+Theme Name: GW makelaars
+Author: Yes Content
+Description: Maatwerkthema naar het GW/Schaub Home-ontwerp (marineblauw, crème, goud, Fraunces-serif, papier-notch, diagonale clips). Toont het Realworks-aanbod via de plugin "Realworks BOG-koppeling".
+Version: 0.1.0
+Requires at least: 6.4
+Requires PHP: 7.4
+Text Domain: gw
+*/
+
+/* De eigenlijke styling staat in assets/css/theme.css. Een nieuw label
+   (bv. Schaub) = dit thema kopiëren en de kleur-variabelen bovenin aanpassen. */
